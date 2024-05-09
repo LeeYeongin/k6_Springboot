@@ -9,22 +9,31 @@ public class MemberService {
 	MemberDao memberDao;
 	
 	public MemberService() {
-		
+		memberDao = new MemberDao();
 	}
 	
 	public List<MemberVO> getAllMember(){
-		memberDao = new MemberDao();
 		List<MemberVO> list = memberDao.getAllMember();
-		memberDao.close();
-		
 		return list;
 	}
 	
 	public MemberVO getMemberById(Integer id) {
-		memberDao = new MemberDao();
 		MemberVO mem = memberDao.getMemberById(id);
-		memberDao.close();
-		
 		return mem;
+	}
+	
+	public int addMember(MemberVO memberVO) {
+		int result = memberDao.addMember(memberVO);
+		return result;
+	}
+	
+	public int updateMember(MemberVO memberVO) {
+		int result = memberDao.updateMember(memberVO);
+		return result;
+	}
+	
+	public int deleteMember(Integer id) {
+		int result = memberDao.deleteMember(id);
+		return result;
 	}
 }
