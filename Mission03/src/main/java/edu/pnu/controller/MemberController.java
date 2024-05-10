@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.pnu.dao.MemberDao;
 import edu.pnu.domain.MemberVO;
 import edu.pnu.service.MemberService;
 
@@ -17,7 +18,7 @@ public class MemberController {
 	private MemberService memberService;
 	
 	public MemberController() {
-		memberService = new MemberService();
+		memberService = new MemberService(new MemberDao());	// Injection
 	}
 	
 	@GetMapping("/members")

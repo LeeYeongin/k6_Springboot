@@ -8,9 +8,13 @@ import edu.pnu.domain.MemberVO;
 public class MemberService {
 	MemberDao memberDao;
 	
-	public MemberService() {
-		memberDao = new MemberDao();
+	public MemberService(MemberDao memgerDao) {
+		this.memberDao = memgerDao;
 	}
+	
+//	public MemberService() {
+//		memberDao = new MemberDao();
+//	}
 	
 	public List<MemberVO> getAllMember(){
 		List<MemberVO> list = memberDao.getAllMember();
