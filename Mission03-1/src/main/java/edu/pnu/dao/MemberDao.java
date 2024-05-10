@@ -113,7 +113,10 @@ public class MemberDao {
 	public int addMember(MemberVO memberVO) {
 		PreparedStatement psmt = null;
 		
-		String query = "INSERT INTO member(id, pass, name) VALUES(?,?,?)";
+		// 방법 1
+//		String query = "INSERT INTO member(id, pass, name) VALUES(?,?,?)";
+		// 방법 2
+		String query = "INSERT INTO member(pass, name) VALUES(?,?)";
 		int result;
 		try {
 			psmt = con.prepareStatement(query);
