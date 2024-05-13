@@ -1,6 +1,5 @@
 package edu.pnu.service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +16,7 @@ public class MemberService {
 	private MemberDao memberDao;
 	@Autowired
 	private LogDao logDao;
-	
-	public MemberService() {
-		System.out.println("MemberService 실행");
-	}
-	
+
 	public List<MemberVO> getAllMember(){
 		Map<String, Object> result = memberDao.getAllMember();
 		
@@ -79,6 +74,24 @@ public class MemberService {
 	
 	public int updateMember(MemberVO memberVO) {
 		Map<String, Object> result = memberDao.updateMember(memberVO);
+		
+		String method = (String) result.get("method");
+		String sql = (String) result.get("sql");
+		boolean success = (boolean) result.get("success");
+		
+		int logResult = logDao.addLog(method, sql, success);
+		
+		if(logResult == 0) {
+			System.out.println("Log 기록 실패");
+		}else {
+			System.out.println("Log 기록 성공");
+		}
+		
+		return (int)result.get("result");
+	}
+	
+	public int deleteMember(Integer id) {
+		Map<String, Object> result = memberDao.deleteMember(id);
 		
 		String method = (String) result.get("method");
 		String sql = (String) result.get("sql");

@@ -2,6 +2,7 @@ package edu.pnu.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,13 +28,16 @@ public class MemberController {
 		return ResponseEntity.ok(memberService.getAllMember());
 	}
 	
-	@GetMapping("/member/{id}")
-	public ResponseEntity<?> getMemberById(@PathVariable Integer id){
-		MemberVO mem = null;
-		if(mem == null)
-			ResponseEntity.badRequest();
-		
-		return ResponseEntity.ok(memberService.getMemberById(id));
+	@GetMapping(value={"/member/{id}", "/member"})
+	public ResponseEntity<?> getMemberById(@PathVariable(required = false) Integer id){
+		if(id == null)
+			return ResponseEntity.ok(memberService.getAllMember());
+		else {			
+			MemberVO mem = memberService.getMemberById(id);
+			if(mem == null)
+				return ResponseEntity.badRequest().body("멤버가 존재하지 않습니다.");
+			return ResponseEntity.ok(mem);
+		}
 	}
 	
 	@PostMapping("/memberJSON")
@@ -51,4 +55,12 @@ public class MemberController {
 			return ResponseEntity.badRequest().body("멤버가 아니라 정보를 변경할 수 없습니다.");
 		return ResponseEntity.ok("멤버를 수정하였습니다.");
 	} 
+	
+	@DeleteMapping("/member/{id}")
+	public ResponseEntity<?> updateMember(@PathVariable Integer id){
+		int result = memberService.deleteMember(id);
+		if(result == 0)
+			return ResponseEntity.badRequest().body("멤버를 삭제할 수 없습니다.");
+		return ResponseEntity.ok("멤버를 삭제하였습니다.");
+	}
 }

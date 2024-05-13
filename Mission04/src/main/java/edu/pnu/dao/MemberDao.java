@@ -103,8 +103,6 @@ public class MemberDao {
 			int idx = query.indexOf(':');
 			query = query.substring(idx+2);
 			
-			System.out.println(query);
-			
 			try {
 				if(psmt != null)
 					psmt.close();
@@ -151,8 +149,6 @@ public class MemberDao {
 			int idx = query.indexOf(':');
 			query = query.substring(idx+2);
 			
-			System.out.println(query);
-			
 			try {
 				if(psmt != null)
 					psmt.close();
@@ -176,8 +172,8 @@ public class MemberDao {
 		PreparedStatement psmt = null;
 
 		String query = "UPDATE Member " 
-				+ "SET name = CASE WHEN ? IS NOT NULL THEN ? ELSE name END, "
-				+ "pass = CASE WHEN ? IS NOT NULL THEN ? ELSE pass END " 
+				+ "SET name = COALESCE(?, name), "
+				+ "pass = COALESCE(?, pass) " 
 				+ "WHERE id = ?";
 		int result;
 		boolean flag = true;
@@ -185,10 +181,8 @@ public class MemberDao {
 		try {
 			psmt = dataSource.getConnection().prepareStatement(query);
 			psmt.setString(1, memberVO.getName());
-			psmt.setString(2, memberVO.getName());
-			psmt.setString(3, memberVO.getPass());
-			psmt.setString(4, memberVO.getPass());
-			psmt.setInt(5, memberVO.getId());
+			psmt.setString(2, memberVO.getPass());
+			psmt.setInt(3, memberVO.getId());
 			
 			result = psmt.executeUpdate();
 		} catch (Exception e) {
@@ -199,8 +193,6 @@ public class MemberDao {
 			query = psmt.toString();
 			int idx = query.indexOf(':');
 			query = query.substring(idx+2);
-			
-			System.out.println(query);
 			
 			try {
 				if(psmt != null)
@@ -213,6 +205,45 @@ public class MemberDao {
 		Map<String, Object> map = new HashMap<>();
 		map.put("result", result);
 		map.put("method", "PUT");
+		map.put("sql", query);
+		map.put("success", flag);
+		
+		return map;	
+	}
+	
+	// Delete 
+	public Map<String, Object> deleteMember(Integer id) {
+		PreparedStatement psmt = null;
+		
+		String query = "DELETE member WHERE id = ?";
+		int result;
+		boolean flag = true;
+		
+		try {
+			psmt = dataSource.getConnection().prepareStatement(query);
+			psmt.setInt(1, id);
+			
+			result = psmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+			result = 0;
+			flag = false;
+		} finally {
+			query = psmt.toString();
+			int idx = query.indexOf(':');
+			query = query.substring(idx+2);
+
+			try {
+				if(psmt != null)
+					psmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("result", result);
+		map.put("method", "DELETE");
 		map.put("sql", query);
 		map.put("success", flag);
 		
