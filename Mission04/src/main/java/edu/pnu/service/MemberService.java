@@ -3,19 +3,19 @@ package edu.pnu.service;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import edu.pnu.dao.LogDao;
 import edu.pnu.dao.MemberDao;
 import edu.pnu.domain.MemberVO;
 
-@Service
 public class MemberService {
-	@Autowired
 	private MemberDao memberDao;
-	@Autowired
 	private LogDao logDao;
+	
+	public MemberService() {
+		memberDao = new MemberDao();
+		logDao = new LogDao();
+		System.out.println("MemberSerivce 실행");
+	}
 
 	public List<MemberVO> getAllMember(){
 		Map<String, Object> result = memberDao.getAllMember();

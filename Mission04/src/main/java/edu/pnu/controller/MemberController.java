@@ -1,6 +1,5 @@
 package edu.pnu.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,11 +15,11 @@ import edu.pnu.service.MemberService;
 @RestController
 public class MemberController {
 	
-	@Autowired
 	private MemberService memberService;
 	
 	public MemberController() {
 		System.out.println("MemberController 실행");
+		memberService = new MemberService();
 	}
 	
 	@GetMapping("/members")

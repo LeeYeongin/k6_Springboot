@@ -1,5 +1,7 @@
 package edu.pnu.dao;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,19 +11,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.sql.DataSource;
-
-import org.springframework.stereotype.Repository;
-
 import edu.pnu.domain.MemberVO;
-import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-@Repository
 public class MemberDao {
+	private Connection con;
 	
-	private final DataSource dataSource;	// 연결정보는 src/main/resources/application.properties에 있음
-	
+	public MemberDao() {
+		try {
+			con = DriverManager.getConnection("jdbc:h2:tcp://localhost/~/.h2/sqlprg", "sa", "abcd");
+			System.out.println("연결에 성공했습니다.");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
 	// Read: 모든 멤버 읽어오기
 	public Map<String, Object> getAllMember(){
 		Statement stmt = null;
@@ -34,7 +37,7 @@ public class MemberDao {
 		String query = "select * from member";
 		
 		try { 
-			stmt = dataSource.getConnection().createStatement();	// 쿼리문 생성
+			stmt = con.createStatement();	// 쿼리문 생성
 			rs = stmt.executeQuery(query); // 쿼리문 실행
 			
 			// 반환된 게시물 목록을 List 컬렌션에 추가
@@ -82,7 +85,7 @@ public class MemberDao {
 		// 쿼리문 준비
 		String query = "select * from member where id=?";
 		try {
-			psmt = dataSource.getConnection().prepareStatement(query);
+			psmt = con.prepareStatement(query);
 			psmt.setInt(1, id); // 인파라미터 설정
 			rs = psmt.executeQuery();	// 쿼리문 실행
 			
@@ -133,7 +136,7 @@ public class MemberDao {
 		boolean flag = true;
 		
 		try {
-			psmt = dataSource.getConnection().prepareStatement(query);
+			psmt = con.prepareStatement(query);
 
 			psmt.setString(1, memberVO.getPass());
 			psmt.setString(2, memberVO.getName());
@@ -179,7 +182,7 @@ public class MemberDao {
 		boolean flag = true;
 		
 		try {
-			psmt = dataSource.getConnection().prepareStatement(query);
+			psmt = con.prepareStatement(query);
 			psmt.setString(1, memberVO.getName());
 			psmt.setString(2, memberVO.getPass());
 			psmt.setInt(3, memberVO.getId());
@@ -220,7 +223,7 @@ public class MemberDao {
 		boolean flag = true;
 		
 		try {
-			psmt = dataSource.getConnection().prepareStatement(query);
+			psmt = con.prepareStatement(query);
 			psmt.setInt(1, id);
 			
 			result = psmt.executeUpdate();
