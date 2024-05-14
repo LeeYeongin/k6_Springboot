@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Repository
 public class MemberDao {
-	
+
 	private final DataSource dataSource;	// 연결정보는 src/main/resources/application.properties에 있음
 	
 	// Read: 모든 멤버 읽어오기
