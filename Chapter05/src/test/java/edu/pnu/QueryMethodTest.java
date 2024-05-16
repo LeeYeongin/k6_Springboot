@@ -42,7 +42,17 @@ public class QueryMethodTest {
 	public void testByContentContaining() {
 		List<Board> boardList = boardRepo.findByContentContaining("17");
 		
-		System.out.println("검색 결과");
+		System.out.println("[findByContentContaining] 검색 결과");
+		for(Board board: boardList) {
+			System.out.println("---> " + board.toString());
+		}
+	}
+	
+	@Test
+	public void testFindByTitleContainingOrContentContaining() {
+		List<Board> boardList = boardRepo.findByTitleContainingOrContentContaining("17", "18");
+		
+		System.out.println("[findByTitleContainingOrContentContaining] 검색 결과");
 		for(Board board: boardList) {
 			System.out.println("---> " + board.toString());
 		}

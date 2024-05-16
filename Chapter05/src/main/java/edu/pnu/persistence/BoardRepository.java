@@ -9,4 +9,5 @@ import edu.pnu.domain.Board;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 	List<Board> findByTitle(String searchKeyword);
 	List<Board> findByContentContaining(String searchKeyword);
+	List<Board> findByTitleContainingOrContentContaining(String title, String content);
 }
