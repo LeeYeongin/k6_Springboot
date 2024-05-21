@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import edu.pnu.domain.Board;
 import edu.pnu.service.BoardService;
@@ -17,12 +18,23 @@ public class BoardController {
 	@Autowired
 	private BoardService boardService;
 	
+//	@GetMapping("/getBoardList")
+//	public String getBoardList(Model model, Board board) { // Model은 view에 넘겨줄 클래스를 저장하는 역할
+//		List<Board> boardList = boardService.getBoardList(board);
+//		
+//		model.addAttribute("boardList", boardList);	// boardList라는 이름으로 저장
+//		return "getBoardList";	// 이름을 return -> application.properties의 prefix + 이름 + suffix
+//	}
+	
 	@GetMapping("/getBoardList")
-	public String getBoardList(Model model, Board board) { // Model은 view에 넘겨줄 클래스를 저장하는 역할
+	public ModelAndView getBoardList(Board board) { // Model은 view에 넘겨줄 클래스를 저장하는 역할
 		List<Board> boardList = boardService.getBoardList(board);
 		
-		model.addAttribute("boardList", boardList);	// boardList라는 이름으로 저장
-		return "getBoardList";	// 이름을 return -> application.properties의 prefix + 이름 + suffix
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("boardList", boardList);
+		mv.setViewName("getBoardList");
+		
+		return mv;
 	}
 	
 	@GetMapping("/insertBoard")
@@ -36,10 +48,21 @@ public class BoardController {
 		return "redirect:getBoardList";
 	}
 	
+//	@GetMapping("/getBoard")
+//	public String getBoard(Board board, Model model) {
+//		model.addAttribute("board", boardService.getBoard(board));
+//		return "getBoard";
+//	}
+	
 	@GetMapping("/getBoard")
-	public String getBoard(Board board, Model model) {
-		model.addAttribute("board", boardService.getBoard(board));
-		return "getBoard";
+	public ModelAndView getBoard(Long seq) {
+		Board b = boardService.getBoard(seq);
+		
+		ModelAndView mv = new ModelAndView();
+		mv.addObject("board", b);
+		mv.setViewName("getBoard");
+		
+		return mv;
 	}
 	
 	@PostMapping("/updateBoard")

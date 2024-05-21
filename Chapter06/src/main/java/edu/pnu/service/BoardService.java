@@ -10,7 +10,9 @@ public interface BoardService {
 
 	void insertBoard(Board board);
 
-	Board getBoard(Board board);
+//	Board getBoard(Board board);
+	
+	Board getBoard(Long seq);
 
 	void updateBoard(Board board);
 

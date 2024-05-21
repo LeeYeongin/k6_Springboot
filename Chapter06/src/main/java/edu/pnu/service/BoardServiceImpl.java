@@ -24,9 +24,14 @@ public class BoardServiceImpl implements BoardService {
 		boardRepo.save(board);
 	}
 	
+//	@Override
+//	public Board getBoard(Board board) {
+//		return boardRepo.findById(board.getSeq()).get();
+//	}
+	
 	@Override
-	public Board getBoard(Board board) {
-		return boardRepo.findById(board.getSeq()).get();
+	public Board getBoard(Long seq) {
+		return boardRepo.findById(seq).get();
 	}
 	
 	@Override
