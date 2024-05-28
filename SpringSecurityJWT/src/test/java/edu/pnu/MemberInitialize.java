@@ -23,19 +23,19 @@ public class MemberInitialize {
 				.username("member")
 				.password(encoder.encode("abcd"))
 				.role(Role.ROLE_MEMBER)
-				.enbabled(true)
+				.enabled(true)
 				.build());
 		memRepo.save(Member.builder()
 				.username("manager")
 				.password(encoder.encode("abcd"))
 				.role(Role.ROLE_MANAGER)
-				.enbabled(true)
+				.enabled(true)
 				.build());
 		memRepo.save(Member.builder()
 				.username("admin")
 				.password(encoder.encode("abcd"))
 				.role(Role.ROLE_ADMIN)
-				.enbabled(true)
+				.enabled(true)
 				.build());
 	}
 }
